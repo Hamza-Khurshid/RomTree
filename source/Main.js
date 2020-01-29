@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, BackHandler, Linking } from 'react-native';
+import { Dimensions, BackHandler } from 'react-native';
 import { WebView } from 'react-native-webview';
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -30,25 +30,30 @@ export default class Main extends React.Component {
       }
     }
 
-    _onShouldStartLoadWithRequest = (u) => {
-      console.log("Url: ", u.url.toString())
-      if(u.url.toString().contains("whatsapp://app"))
-        Linking.openURL('whatsapp://app')
-
-      return true  
+    whatHappened = (params) => {
+      this.props.setLoader(false);
     }
   
     render() {
+      let { loader } = this.props;
+
       return (
         <WebView
-          style={{
-            height,
-            width,
-          }}
+          style={
+            loader ?
+            {
+              display: "none"
+            }
+            :
+            {
+              height,
+              width,
+            }
+          }
+          onLoadEnd={(p)=>this.whatHappened(p)}
           source={{ uri: "https://www.romtree.com" }}
           ref={(webView) => { this.webView.ref = webView; }}
-          // onShouldStartLoadWithRequest={(url) => this._onShouldStartLoadWithRequest(url)}
-          userAgent="Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
+          userAgent="Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543a Safari/419.3"
           onNavigationStateChange={(navState) => { this.webView.canGoBack = navState.canGoBack; }}
         />
       );
