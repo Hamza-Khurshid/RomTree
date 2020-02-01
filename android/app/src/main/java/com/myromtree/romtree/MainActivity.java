@@ -1,4 +1,4 @@
-package com.romtree;
+package com.myromtree.romtree;
 
 import com.facebook.react.ReactActivity;
 
